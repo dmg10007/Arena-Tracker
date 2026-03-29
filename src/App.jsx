@@ -5,6 +5,7 @@ import './styles/global.css';
 // Layout
 import Navbar from './components/layout/Navbar';
 import Sidebar from './components/layout/Sidebar';
+import ErrorBoundary from './components/ErrorBoundary';
 
 // Pages
 import Home from './pages/Home';
@@ -20,20 +21,24 @@ export default function App() {
         <Navbar />
         <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
           <Sidebar />
-          <main style={{
-            flex: 1,
-            overflowY: 'auto',
-            padding: 'var(--space-5)',
-            background: 'var(--bg-deep)',
-          }}>
-            <Routes>
-              <Route path="/"           element={<Home />} />
-              <Route path="/decks"      element={<DeckPage />} />
-              <Route path="/collection" element={<CollectionPage />} />
-              <Route path="/draft"      element={<DraftPage />} />
-              <Route path="/meta"       element={<MetaPage />} />
-              <Route path="*"           element={<Navigate to="/" replace />} />
-            </Routes>
+          <main
+            style={{
+              flex: 1,
+              overflowY: 'auto',
+              padding: 'var(--space-5)',
+              background: 'var(--bg-deep)',
+            }}
+          >
+            <ErrorBoundary>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/decks" element={<DeckPage />} />
+                <Route path="/collection" element={<CollectionPage />} />
+                <Route path="/draft" element={<DraftPage />} />
+                <Route path="/meta" element={<MetaPage />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </ErrorBoundary>
           </main>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { createDeck, addCard, removeCard } from '../utils/deckUtils';
+import { createDeck, addCard, removeCard } from './utils/deckUtils';
 
 // ─── Deck Store ───────────────────────────────────────────────────────────────
 export const useDeckStore = create(
@@ -25,20 +25,28 @@ export const useDeckStore = create(
       setActiveDeck: (id) => set({ activeDeckId: id }),
 
       addCardToDeck: (deckId, card, section = 'mainboard') =>
-        set((s) => ({
-          decks: {
-            ...s.decks,
-            [deckId]: addCard(s.decks[deckId], card, section),
-          },
-        })),
+        set((s) => {
+          const deck = s.decks[deckId];
+          if (!deck) return s; // guard: don't modify if deck missing
+          return {
+            decks: {
+              ...s.decks,
+              [deckId]: addCard(deck, card, section),
+            },
+          };
+        }),
 
       removeCardFromDeck: (deckId, cardName, section = 'mainboard') =>
-        set((s) => ({
-          decks: {
-            ...s.decks,
-            [deckId]: removeCard(s.decks[deckId], cardName, section),
-          },
-        })),
+        set((s) => {
+          const deck = s.decks[deckId];
+          if (!deck) return s; // guard
+          return {
+            decks: {
+              ...s.decks,
+              [deckId]: removeCard(deck, cardName, section),
+            },
+          };
+        }),
 
       renameDeck: (id, name) =>
         set((s) => ({

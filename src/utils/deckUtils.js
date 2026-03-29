@@ -7,12 +7,23 @@ export const BASIC_LANDS = ['Plains', 'Island', 'Swamp', 'Mountain', 'Forest', '
 export const DECK_SIZE = 60;
 export const SIDEBOARD_SIZE = 15;
 
+function generateId() {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    try {
+      return crypto.randomUUID();
+    } catch (e) {
+      // fall through to fallback below
+    }
+  }
+  return `deck-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 9)}`;
+}
+
 /**
  * Create a new empty deck.
  */
 export function createDeck(name = 'New Deck') {
   return {
-    id: crypto.randomUUID(),
+    id: generateId(),
     name,
     format: 'Standard',
     mainboard: {},   // { cardName: { card, count } }

@@ -27,7 +27,7 @@ export const useDeckStore = create(
       addCardToDeck: (deckId, card, section = 'mainboard') =>
         set((s) => {
           const deck = s.decks[deckId];
-          if (!deck) return s; // guard: don't modify if deck missing
+          if (!deck) return; // no-op if deck doesn't exist
           return {
             decks: {
               ...s.decks,
@@ -39,7 +39,7 @@ export const useDeckStore = create(
       removeCardFromDeck: (deckId, cardName, section = 'mainboard') =>
         set((s) => {
           const deck = s.decks[deckId];
-          if (!deck) return s; // guard
+          if (!deck) return; // no-op if deck doesn't exist
           return {
             decks: {
               ...s.decks,
@@ -89,7 +89,7 @@ export const useCollectionStore = create(
       removeFromCollection: (cardId, count = 1) =>
         set((s) => {
           const existing = s.collection[cardId];
-          if (!existing) return s;
+          if (!existing) return; // no-op if not present
           const updated = { ...s.collection };
           if (existing.count <= count) {
             delete updated[cardId];

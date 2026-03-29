@@ -41,6 +41,8 @@ export function createDeck(name = 'New Deck') {
  * @returns {object} updated deck
  */
 export function addCard(deck, card, section = 'mainboard') {
+  if (!deck) return deck; // guard: no-op if deck missing
+
   const key = card.name;
   const current = deck[section][key];
   const isBasic = BASIC_LANDS.includes(card.name);
@@ -65,6 +67,8 @@ export function addCard(deck, card, section = 'mainboard') {
  * Remove one copy of a card from a section.
  */
 export function removeCard(deck, cardName, section = 'mainboard') {
+  if (!deck) return deck; // guard: no-op if deck missing
+
   const current = deck[section][cardName];
   if (!current) return deck;
 
